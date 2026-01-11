@@ -23,10 +23,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build Debug APK
+        # This version looks in the root since you don't have an 'app' folder
         run: ./gradlew assembleDebug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: StudyGenie-APK
-          path: app/build/outputs/apk/debug/*.apk
+          # Adjusted path to find the APK in the root build folder
+          path: "**/build/outputs/apk/debug/*.apk"
