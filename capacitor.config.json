@@ -1,0 +1,6 @@
+{
+  "appId": "com.studygenie.app",
+  "appName": "StudyGenie",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
