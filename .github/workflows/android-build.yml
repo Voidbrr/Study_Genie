@@ -19,9 +19,12 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Web Project
-        # This creates the 'dist' folder that Capacitor needs
-        run: npm run build
+      - name: Build Web & Add Android
+        # This creates the 'android' folder that Gradle is looking for
+        run: |
+          npm run build
+          npx cap add android || true
+          npx cap sync android
 
       - name: Set up JDK 25
         uses: actions/setup-java@v4
@@ -33,11 +36,11 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build APK
-        # This now builds the Android package
-        run: ./gradlew assembleDebug
+        # We now tell Gradle to look inside the new 'android' folder
+        run: cd android && ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: StudyGenie-APK
-          path: "**/build/outputs/apk/debug/*.apk"
+          path: "android/app/build/outputs/apk/debug/*.apk"
