@@ -19,16 +19,19 @@ jobs:
           distribution: 'temurin'
           java-version: '25'
 
-      - name: Grant permissions to Gradlew
-        run: chmod +x gradlew
+      - name: Find and Fix Permissions
+        # This finds the gradlew file even if it is inside a subfolder
+        run: find . -name "gradlew" -exec chmod +x {} +
 
       - name: Build Debug APK
-        # This version looks in the root since you don't have an 'app' folder
-        run: ./gradlew assembleDebug
+        # This tells GitHub to run the build from wherever the gradlew file is located
+        run: |
+          GRADLEW_PATH=$(find . -name "gradlew" | head -n 1)
+          cd $(dirname $GRADLEW_PATH)
+          ./gradlew assembleDebug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: StudyGenie-APK
-          # Adjusted path to find the APK in the root build folder
           path: "**/build/outputs/apk/debug/*.apk"
