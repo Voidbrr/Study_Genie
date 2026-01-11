@@ -1,5 +1,4 @@
 name: Android CI
-
 on:
   push:
     branches: [ "main" ]
@@ -8,7 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -19,18 +17,15 @@ jobs:
           distribution: 'temurin'
           java-version: '25'
 
-      - name: Find and Fix Permissions
-        # This finds the gradlew file even if it is inside a subfolder
-        run: find . -name "gradlew" -exec chmod +x {} +
+      - name: Fix Permissions
+        # This makes the gradlew file "executable"
+        run: chmod +x gradlew
 
-      - name: Build Debug APK
-        # This tells GitHub to run the build from wherever the gradlew file is located
-        run: |
-          GRADLEW_PATH=$(find . -name "gradlew" | head -n 1)
-          cd $(dirname $GRADLEW_PATH)
-          ./gradlew assembleDebug
+      - name: Build APK
+        # This runs the engine inside gradle/wrapper/
+        run: ./gradlew assembleDebug
 
-      - name: Upload APK Artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: StudyGenie-APK
