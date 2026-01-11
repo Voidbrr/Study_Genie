@@ -19,10 +19,12 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Web & Add Android
-        # This creates the 'android' folder that Gradle is looking for
+      - name: Install & Web Build
         run: |
+          npm install
           npm run build
+          # This command creates all the Android icon sizes from your assets/icon.png
+          npx capacitor-assets generate --android 
           npx cap add android || true
           npx cap sync android
 
@@ -34,15 +36,6 @@ jobs:
 
       - name: Fix Permissions
         run: chmod +x gradlew
-
-      - name: Install & Web Build
-        run: |
-          npm install
-          npm run build
-          # This command creates all the Android icon sizes from your assets/icon.png
-          npx capacitor-assets generate --android 
-          npx cap add android || true
-          npx cap sync android
 
       - name: Build APK
         # We now tell Gradle to look inside the new 'android' folder
