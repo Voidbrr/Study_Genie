@@ -1,7 +1,10 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { CourseData, GenerationRequest, Subject } from "../types";
 
-const ai = new GoogleGenAI({ apiKey:"AIzaSyBauz2wRSDiWLcxydxA9aFjqAUbsVVPioQ" });
+// This tells the app to look for the secret during the build process
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 const courseSchema: Schema = {
   type: Type.OBJECT,
