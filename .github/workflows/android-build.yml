@@ -22,7 +22,7 @@ jobs:
       - name: Install & Web Build
         run: |
           npm install
-          npm run build
+          VITE_GEMINI_API_KEY=${{ secrets.VITE_GEMINI_API_KEY }} npm run build
           # This command creates all the Android icon sizes from your assets/icon.png
           npx capacitor-assets generate --android 
           npx cap add android || true
